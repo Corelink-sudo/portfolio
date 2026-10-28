@@ -1,0 +1,39 @@
+name: Publish website
+
+on:
+  push:
+    branches: [arena/05725cdf-portfolio]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+
+concurrency:
+  group: github-pages-publishing
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify static site
+        run: python -m unittest discover -s tests -v
+      - name: Set the Pages publishing branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method PUT "repos/${GITHUB_REPOSITORY}/pages" \
+            -f "source[branch]=arena/05725cdf-portfolio" \
+            -f "source[path]=/"
+      - name: Request a Pages build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"
