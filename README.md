@@ -125,9 +125,9 @@ moves a bounded texture instead of repainting a full-screen gradient each frame.
 To regenerate the aurora asset, install Pillow in a development environment and
 run `python scripts/generate_aurora.py`. Pillow is not needed by visitors or Pages.
 
-GitHub Pages serves the root of `arena/05725cdf-portfolio` (the session branch):
+GitHub Pages serves the root of `main`:
 https://corelink-sudo.github.io/portfolio/
 
-Publish updates by pushing this branch. `.nojekyll` enables direct static serving.
-Do not switch the Pages source to `main` unless the updated site has been merged
-there, or it will display the old site again.
+Develop and push changes on `arena/05725cdf-portfolio`, then publish through a
+pull request into `main`. GitHub builds and deploys Pages after the merge.
+`.nojekyll` enables direct static serving; no Pages settings changes are needed.
